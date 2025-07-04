@@ -7,7 +7,7 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class GameOfLifeGeneratorTest {
-    private final GameOfLifeGenerator gameGenerator = new GameOfLifeGenerator();;
+    private final GameOfLifeGenerator gameGenerator = new GameOfLifeGenerator();
 
     @Test
     @DisplayName("Generate the next generation from a 4 by 8 board")
@@ -22,6 +22,26 @@ public class GameOfLifeGeneratorTest {
                         {".",".",".","*","*",".",".","."},
                         {".",".",".","*","*",".",".","."},
                         {".",".",".",".",".",".",".","."}
+        };
+
+        assertArrayEquals(expected, result);
+
+    }
+
+    @Test
+    @DisplayName("Generate the next generation from a 5 by 9 board")
+    void GameOfLifeTest2() {
+        var file = new File("./src/test/resources/generation5by9.txt");
+
+        String[][] result = gameGenerator.nextGeneration(file);
+
+        String[][] expected =
+                new String[][]{
+                        {".",".",".",".",".",".",".",".","."},
+                        {".",".",".","*","*",".",".",".","."},
+                        {".",".",".",".",".","*",".",".","."},
+                        {".",".",".","*","*",".",".",".","."},
+                        {".",".",".",".",".",".",".",".","."}
         };
 
         assertArrayEquals(expected, result);

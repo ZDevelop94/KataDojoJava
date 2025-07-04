@@ -20,9 +20,25 @@ public class GameOfLifeGenerator {
         return calculateNextGeneration(arrayBoard);
     }
 
-    private String[][] fileToBoard(File file) {
+    private Pair<Integer, Integer> getColumnAndRowSize(File file) {
+        int rowSizeFromLinesScanned = 0;
+        String rowString = ".";
+        try {
+            Scanner fileScanner = new Scanner(file);
 
-        String[][] arrayOfLines = new String[4][8];
+            while (fileScanner.hasNextLine()) {
+                rowString = fileScanner.nextLine();
+                rowSizeFromLinesScanned++;
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred, message:\n" + e.getMessage());
+        }
+        return new Pair<>(rowSizeFromLinesScanned, rowString.length());
+    }
+
+    private String[][] fileToBoard(File file) {
+        var rowAndColumnSize = getColumnAndRowSize(file);
+        String[][] arrayOfLines = new String[rowAndColumnSize.getValue0()][rowAndColumnSize.getValue1()];
 
         try {
             Scanner fileScanner = new Scanner(file);
@@ -31,21 +47,16 @@ public class GameOfLifeGenerator {
                 String data = fileScanner.nextLine();
                 char[] chars = data.toCharArray();
 
-                if (chars.length <= 8) {
                     String[] singleCharOfStrings = new String[chars.length];
                     for (int i = 0; i < chars.length; i++) {
                         singleCharOfStrings[i] = String.valueOf(chars[i]);
                     }//turned into String array just in case I have to map as you cannot map char Arrays (via stream)
                     arrayOfLines[linesScannedCount] = singleCharOfStrings;
-                } else {
-                    arrayOfLines[linesScannedCount] = new String[]{".", ".", ".", ".", ".", ".", ".", "."};
-                }
                 linesScannedCount++;
             }
             fileScanner.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            System.out.println("An error occurred, message:\n" + e.getMessage());
         }
 
         return arrayOfLines;
@@ -75,7 +86,7 @@ public class GameOfLifeGenerator {
         final GameRules doNotChangeDeadToAlive = (amount) -> amount != 3;
 
         System.out.println("\nGGGg");
-        System.out.println(arrayBoard.length + " 0length" + arrayBoard[0].length);
+        System.out.println("row length: " + arrayBoard.length + " column length: " + arrayBoard[0].length);
         System.out.println(rowPosition);
         System.out.println(columnPosition);
 
