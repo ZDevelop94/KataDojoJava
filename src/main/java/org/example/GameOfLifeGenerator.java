@@ -61,7 +61,7 @@ public class GameOfLifeGenerator {
         for (int rowPosition = 0; rowPosition < arrayBoard.length; rowPosition++) {
             for (int columnPosition = 0; columnPosition < arrayBoard[0].length; columnPosition++) {
                 CellType nextGenOfCell = nextGenOfCell(arrayBoard, rowPosition, columnPosition);
-                calculatedBoard[rowPosition][columnPosition] = nextGenOfCell.value().toString();
+                calculatedBoard[rowPosition][columnPosition] = nextGenOfCell.value();
             }
         }
 
@@ -79,13 +79,13 @@ public class GameOfLifeGenerator {
         System.out.println(rowPosition);
         System.out.println(columnPosition);
 
-        Long aliveNeighbours =
-                Long.valueOf(amountOfAlive(
+        long aliveNeighbours =
+                amountOfAlive(
                         arrayBoard, new Cell(arrayBoard[rowPosition][columnPosition], new Position(rowPosition, columnPosition))
-                ));
+                );
 
         final int finalColumnPosition = columnPosition;
-        return switch (aliveNeighbours) {
+        return switch (Long.valueOf(aliveNeighbours)) {
             case Long amount when underpopulation.rule(amount) -> new DeadCell();
             case Long amount when overcrowding.rule(amount) -> new DeadCell();
             case Long amount when
@@ -151,7 +151,7 @@ public class GameOfLifeGenerator {
             neighbour = Optional.empty();
         }
 
-        return new Pair(isAlive(neighbour.orElse(new DeadCell().value())), neighbour.isEmpty());
+        return new Pair<>(isAlive(neighbour.orElse(new DeadCell().value())), neighbour.isEmpty());
     }
 
     private Boolean isAlive(String cell) {
