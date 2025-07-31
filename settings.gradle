@@ -3,3 +3,7 @@
  */
 
 rootProject.name = 'KataDojo'
+include 'tradingcardgame'
+include 'gameoflife'
+include 'fizzbuzz'
+include 'core'
